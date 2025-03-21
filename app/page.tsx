@@ -1,7 +1,4 @@
+export {default} from "@/app/ency/page";
 
 
-export default function Home() {
-  return (
-    <div className="">Hi</div>
-  );
-}
+
