@@ -1,6 +1,7 @@
 'use client'
 
 import {useCallback} from "react";
+import Editor from "@/components/Editor";
 
 const Types = [
   {name: 'Question', code: 'question'},
@@ -53,6 +54,10 @@ export default function EncyPage() {
       </div>
       <hr/>
 
+      <Editor/>
+      <hr/>
+      <hr/>
+      <hr/>
 
       <input type="button" value="Save"/>
     </div>
