@@ -2,21 +2,25 @@
 
 import {useCallback} from "react";
 import Editor from "@/components/Editor";
+import {Button, Container, MultiSelect, NativeSelect, Select} from "@mantine/core";
 
 const Types = [
   {name: 'Question', code: 'question'},
   {name: 'Coding', code: 'coding'},
   {name: 'Logic', code: 'logic'},
+  {name: 'Language', code: 'language'},
 ];
 
-const Languages = [
+const Languages: any[] = [
   {name: 'JS', code: 'js'},
   {name: 'TS', code: 'ts'},
   {name: 'HTML', code: 'html'},
   {name: 'CSS', code: 'css'},
 ];
 
-const Categories = [
+const Categories: any[] = [
+  {name: 'Frontend', code: 'frontend'},
+  {name: 'Backend', code: 'backend'},
   {name: 'General', code: 'general'},
   {name: 'System Design', code: 'sysdes'},
   {name: 'Algorithms', code: 'alg'},
@@ -34,24 +38,27 @@ export default function EncyPage() {
   }, [])
 
   return (
-    <div>
+    <Container size="md">
       <div>
-        <select name="type">
-          {Types.map(item => (<option key={item.code} value={item.code}>{item.name}</option>))}
-        </select>
+        <Select
+          label="Type"
+          placeholder="Pick value"
+          data={Types.map(item => ({label: item.name, value: item.code}))}
+        />
+
+
+        <MultiSelect
+          mt="md"
+          label="Tags"
+          placeholder="Pick value"
+          data={[...Languages, ...Categories].map(item => ({label: item.name, value: item.code}))}
+        />
+
       </div>
-      <hr className="mb-3"/>
-      <div>
-        <select name="languagies" multiple>
-          {Languages.map(item => (<option key={item.code} value={item.code}>{item.name}</option>))}
-        </select>
-      </div>
-      <hr className="mb-3"/>
-      <div>
-        <select name="categories" multiple>
-          {Categories.map(item => (<option key={item.code} value={item.code}>{item.name}</option>))}
-        </select>
-      </div>
+
+      Question:
+      Answer:
+
       <hr/>
 
       <Editor/>
@@ -59,7 +66,7 @@ export default function EncyPage() {
       <hr/>
       <hr/>
 
-      <input type="button" value="Save"/>
-    </div>
+      <Button>Save</Button>
+    </Container>
   );
 }
