@@ -1,8 +1,10 @@
 'use client'
 
-import {useCallback} from "react";
-import Editor from "@/components/Editor";
-import {Button, Container, MultiSelect, NativeSelect, Select} from "@mantine/core";
+import {createRef, useCallback, useEffect, useRef, useState} from "react";
+import AppRichTextEditor from "@/components/AppRichTextEditor";
+import {Button, Container, MultiSelect, NativeSelect, Select, Text} from "@mantine/core";
+import {Editor} from "@tiptap/core";
+import {getEncyItems} from "@/app/ency/actions";
 
 const Types = [
   {name: 'Question', code: 'question'},
@@ -32,41 +34,51 @@ const Categories: any[] = [
 
 
 export default function EncyPage() {
+  const questionRef = useRef<Editor>(null);
+  const answerRef = useRef<Editor>(null);
 
-  const ss = useCallback(async () => {
-    console.log(window);
+  const [encyItems, setEncyItems] = useState<any[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      const items = await getEncyItems();
+      setEncyItems(items);
+    })()
   }, [])
 
   return (
-    <Container size="md">
-      <div>
-        <Select
-          label="Type"
-          placeholder="Pick value"
-          data={Types.map(item => ({label: item.name, value: item.code}))}
-        />
+    <>
+      <Container size="md">
+        <div>
+          <Select
+            label="Type"
+            placeholder="Pick value"
+            data={Types.map(item => ({label: item.name, value: item.code}))}
+          />
 
 
-        <MultiSelect
-          mt="md"
-          label="Tags"
-          placeholder="Pick value"
-          data={[...Languages, ...Categories].map(item => ({label: item.name, value: item.code}))}
-        />
+          <MultiSelect
+            mt="md"
+            label="Tags"
+            placeholder="Pick value"
+            data={[...Languages, ...Categories].map(item => ({label: item.name, value: item.code}))}
+          />
 
-      </div>
+        </div>
 
-      Question:
-      Answer:
+        <Text mt="md">Question:</Text>
+        <AppRichTextEditor ref={questionRef}/>
 
-      <hr/>
+        <Text mt="md">Answer:</Text>
+        <AppRichTextEditor ref={answerRef}/>
 
-      <Editor/>
-      <hr/>
-      <hr/>
-      <hr/>
 
-      <Button>Save</Button>
-    </Container>
+        <Button onClick={() => {
+          console.log(questionRef.current?.getHTML());
+        }}>Save</Button>
+      </Container>
+    </>
   );
 }
+
+
